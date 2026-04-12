@@ -32,7 +32,7 @@ const CategorySchema=new mongoose.Schema({
         };
         ret.createdAt = new Date(ret.createdAt).toLocaleString("en-EG", options);
         ret.updatedAt = new Date(ret.updatedAt).toLocaleString("en-EG", options);
-        return ret;
+        return ret ;
       },
     },
   })// auto adds createdAt and updatedAt)

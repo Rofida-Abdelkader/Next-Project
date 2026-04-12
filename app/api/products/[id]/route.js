@@ -4,7 +4,8 @@ import { NextResponse } from "next/server";
 export async function GET(request,{params}){
     try{
         await connectDB()
-        const product=await Product.findById(params.id)
+        const {id}= await params
+        const product=await Product.findById(id)
         if(!product){
             return NextResponse.json({message:"Product Not Found"},{status:404})
         }return NextResponse.json({product},{status:200})
@@ -17,7 +18,8 @@ export async function PUT(request,{params}){
     try{
         await connectDB()
         const body=await request.json()
-        const product= await Product.findByIdAndUpdate(params.id,body,{
+        const {id}=await params
+        const product= await Product.findByIdAndUpdate(id,body,{
             new:true,
             runValidators:true
         })
@@ -32,7 +34,8 @@ export async function PUT(request,{params}){
 export async function DELETE(request,{params}){
     try{
         await connectDB()
-        const product=await Product.findByIdAndDelete(params.id)
+        const {id}=await params
+        const product=await Product.findByIdAndDelete(id)
         if(!product){
             return NextResponse.json({message:"Product Not Found"},{status:404})
         }return NextResponse.json({message:"Deleted successfully",deleted:product},{status:200})

@@ -10,7 +10,8 @@ import { NextResponse } from "next/server";
 export async function GET(request,{params}){
     try{
         await connectDB()
-        const category=await Category.findById(params.id)
+        const {id}=await params
+        const category=await Category.findById(id)
         if(!category){
             return NextResponse.json({error:"Category not found"}, {status:404})
         }
@@ -32,8 +33,9 @@ export async function GET(request,{params}){
 export async function PUT(request,{params}){
     try{
         await connectDB()
-        const{name,description}= await request.json();
-        const category=await Category.findByIdAndUpdate(params.id,{name,description},{ //if the body is empty we dont update it
+        const body=await request.json()
+        const {id}=await params
+        const category=await Category.findByIdAndUpdate(id,body,{ //if the body is empty we dont update it
             new:true,
             runValidators:true
         })
@@ -58,8 +60,8 @@ export async function PUT(request,{params}){
 export async function DELETE(request,{params}){
     try{
         await connectDB()
-        
-        const category=await Category.findByIdAndDelete(params.id)
+        const {id}=await params
+        const category=await Category.findByIdAndDelete(id)
         if(!category){
             return NextResponse.json({error:"Category not found"},{status:404})
         }
