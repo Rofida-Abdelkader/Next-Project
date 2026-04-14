@@ -1,6 +1,6 @@
 "use client";
 
-import { Product } from "@/lib/types";
+import { Product } from "../types/product.types";
 
 interface ProductCardProps {
   product: Product;

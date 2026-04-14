@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Product, ProductFormData } from "@/lib/types";
-import { getCategories } from "@/lib/products";
+import { Product, ProductFormData } from "../types/product.types";
+import { productService } from "../services/product.service";
 
 interface Category {
   _id: string;
@@ -26,6 +26,7 @@ const emptyForm: ProductFormData = {
   brand: "",
   rating: 0,
   numReviews: 0,
+  status: "active",
 };
 
 export default function ProductForm({
@@ -46,6 +47,7 @@ export default function ProductForm({
         brand: initialData.brand ?? "",
         rating: initialData.rating ?? 0,
         numReviews: initialData.numReviews ?? 0,
+        status: initialData.status ?? "active",
       }
     : emptyForm
 );
@@ -53,7 +55,7 @@ export default function ProductForm({
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    getCategories().then((data) => setCategories(data));
+    productService.getCategories().then((data) => setCategories(data));
   }, []);
 
   const handleChange = (
@@ -144,7 +146,6 @@ export default function ProductForm({
       required
       className="border p-2 rounded"
     />
-      {/* Dropdown للـ categories */}
       <select
         name="category"
         value={formData.category}
