@@ -6,6 +6,9 @@ export interface IProduct extends Document {
   price: number;
   discount: number;
   stock: number;
+  brand: string;
+  rating: number;
+  numReviews: number;
   category: mongoose.Types.ObjectId;
   status: "active" | "draft" | "archived";
   createdAt: Date;
@@ -47,6 +50,20 @@ const ProductSchema = new Schema<IProduct>(
       type: String,
       enum: ["active", "draft", "archived"],
       default: "active",
+    },
+    brand: {
+      type: String,
+      default: "",
+    },
+    rating: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5,
+    },
+    numReviews: {
+      type: Number,
+      default: 0,
     },
   },
   {
