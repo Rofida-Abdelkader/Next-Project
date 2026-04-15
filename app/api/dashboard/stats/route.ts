@@ -39,11 +39,30 @@ export async function GET() {
       { $sort: { count: -1 } },
     ]);
 
+    // Brand distribution
+    const brandDistribution = await Product.aggregate([
+      { $match: { brand: { $ne: "" } } },
+      { $group: { _id: "$brand", count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: 5 }
+    ]);
+
+    // Average rating
+    const ratingStats = await Product.aggregate([
+      { $group: { _id: null, avgRating: { $avg: "$rating" }, totalReviews: { $sum: "$numReviews" } } }
+    ]);
+
+    const avgRating = ratingStats.length > 0 ? Number(ratingStats[0].avgRating.toFixed(1)) : 0;
+    const totalReviews = ratingStats.length > 0 ? ratingStats[0].totalReviews : 0;
+
     return NextResponse.json({
       totalProducts,
       outOfStock,
       totalCategories,
       productsByCategory,
+      brandDistribution,
+      avgRating,
+      totalReviews
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
